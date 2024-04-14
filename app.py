@@ -1,6 +1,9 @@
 import streamlit as st
 from datetime import datetime, timedelta
 
+# Start date from which Thursdays are counted
+start_date = datetime(2024, 4, 11)
+
 # Names and initial numbers
 initial_numbers = {
     "عمو أحمد": 30,
@@ -47,44 +50,22 @@ def convert_to_hindi(number):
 def app():
     st.title('Name and Number Manager')
 
-    # Initialize or get existing state
-    if 'names_numbers' not in st.session_state:
-        st.session_state['names_numbers'] = initial_numbers.copy()
-
-    if 'last_updated' not in st.session_state:
-        st.session_state['last_updated'] = datetime(2024, 4, 11)  # Set default last updated date
-
+    # Calculate the number of Thursdays since the start date
     today = datetime.today().date()
-    last_updated = st.session_state['last_updated'].date()
+    delta_days = (today - start_date.date()).days
+    thursday_count = delta_days // 7
 
-    # Check if today is Thursday and we haven't updated this week
-    if today.weekday() == 3 and (today > last_updated or last_updated.weekday() != 3):
-        for name in st.session_state['names_numbers']:
-            new_value = st.session_state['names_numbers'][name] + 1
-            if new_value > 30:
-                st.session_state['names_numbers'][name] = 1
-            else:
-                st.session_state['names_numbers'][name] = new_value
-        st.session_state['last_updated'] = today
+    # Increment the initial numbers by the number of past Thursdays
+    updated_numbers = {name: (number + thursday_count - 1) % 30 + 1 for name, number in initial_numbers.items()}
 
     # Display names and numbers
-    for name, number in st.session_state['names_numbers'].items():
+    for name, number in updated_numbers.items():
         hindi_number = convert_to_hindi(number)
         st.write(f'{name} {hindi_number}')
 
-    # Button to manually increment numbers
-    if st.button('Add 1 to all numbers manually'):
-        for name in st.session_state['names_numbers']:
-            new_value = st.session_state['names_numbers'][name] + 1
-            if new_value > 30:
-                st.session_state['names_numbers'][name] = 1
-            else:
-                st.session_state['names_numbers'][name] = new_value
-        st.experimental_rerun()
-
     # Button to copy all entries
     if st.button('Copy all entries'):
-        formatted_text = '\n'.join([f"{name} {convert_to_hindi(st.session_state['names_numbers'][name])}" for name in st.session_state['names_numbers']])
+        formatted_text = '\n'.join([f"{name} {convert_to_hindi(updated_numbers[name])}" for name in updated_numbers])
         st.text_area('Copy from here:', formatted_text, height=250)
 
 if __name__ == '__main__':
