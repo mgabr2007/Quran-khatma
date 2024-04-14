@@ -50,7 +50,9 @@ def app():
     # Initialize or get existing state
     if 'names_numbers' not in st.session_state:
         st.session_state['names_numbers'] = initial_numbers.copy()
-        st.session_state['last_updated'] = datetime(2024, 4, 11)  # Start counting from this date
+
+    if 'last_updated' not in st.session_state:
+        st.session_state['last_updated'] = datetime(2024, 4, 11)  # Set default last updated date
 
     today = datetime.today().date()
     last_updated = st.session_state['last_updated'].date()
