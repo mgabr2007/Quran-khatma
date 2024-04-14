@@ -33,7 +33,7 @@ def app():
 
     # Display today's date and the number of weeks added in Arabic using Markdown for right alignment
     st.markdown(f"#### تاريخ اليوم: {arabic_date}", unsafe_allow_html=True)
-    st.markdown(f"#### عدد الختمات منذ ٢٢ أكتوبر 2020: {convert_to_hindi(thursday_count)}", unsafe_allow_html=True)
+    st.markdown(f"#### عدد الختمات منذ ٢٢ أكتوبر ٢٠٢٠: {convert_to_hindi(thursday_count)}", unsafe_allow_html=True)
 
     # Names and initial numbers
     initial_numbers = {
