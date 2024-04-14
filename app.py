@@ -34,6 +34,15 @@ initial_numbers = {
     "منى": 29
 }
 
+# Mapping Arabic to Hindi numerals
+arabic_to_hindi = {
+    '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+    '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+}
+
+def convert_to_hindi(number):
+    return ''.join(arabic_to_hindi[digit] for digit in str(number))
+
 def app():
     st.title('Name and Number Manager')
 
@@ -43,7 +52,8 @@ def app():
 
     # Display names and numbers
     for name, number in st.session_state['names_numbers'].items():
-        st.write(f'{name} {number}')
+        hindi_number = convert_to_hindi(number)
+        st.write(f'{name} {hindi_number}')
 
     # Button to increment numbers
     if st.button('Add 1 to all numbers'):
@@ -57,7 +67,7 @@ def app():
 
     # Button to copy all entries
     if st.button('Copy all entries'):
-        formatted_text = '\n'.join([f"{name} {st.session_state['names_numbers'][name]}" for name in st.session_state['names_numbers']])
+        formatted_text = '\n'.join([f"{name} {convert_to_hindi(st.session_state['names_numbers'][name])}" for name in st.session_state['names_numbers']])
         st.text_area('Copy from here:', formatted_text, height=250)
 
 if __name__ == '__main__':
