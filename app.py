@@ -48,7 +48,7 @@ def convert_to_hindi(number):
     return ''.join(arabic_to_hindi[digit] for digit in str(number))
 
 def app():
-    st.title('ختمة القرأن لأل جبر')
+    st.title('ختمة القرآن لآل جبر')
 
     today = datetime.today().date()
     delta_days = (today - start_date.date()).days
