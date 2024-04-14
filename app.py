@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Names and initial numbers
-names_numbers = {
+initial_numbers = {
     "عمو أحمد": 30,
     "طنط سوسو": 1,
     "سارة": 2,
@@ -37,19 +37,23 @@ names_numbers = {
 def app():
     st.title('Name and Number Manager')
 
+    # Initialize or get existing state
+    if 'names_numbers' not in st.session_state:
+        st.session_state['names_numbers'] = initial_numbers.copy()
+
     # Display names and numbers
-    for name, number in names_numbers.items():
+    for name, number in st.session_state['names_numbers'].items():
         st.write(f'{name} {number}')
 
     # Button to increment numbers
     if st.button('Add 1 to all numbers'):
-        for name in names_numbers:
-            names_numbers[name] += 1
+        for name in st.session_state['names_numbers']:
+            st.session_state['names_numbers'][name] += 1
         st.experimental_rerun()
 
     # Button to copy all entries
     if st.button('Copy all entries'):
-        formatted_text = '\n'.join([f'{name} {number}' for name, number in names_numbers.items()])
+        formatted_text = '\n'.join([f'{name} {st.session_state['names_numbers'][name]}' for name in st.session_state['names_numbers']])
         st.text_area('Copy from here:', formatted_text, height=250)
 
 if __name__ == '__main__':
