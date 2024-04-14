@@ -1,5 +1,4 @@
 import streamlit as st
-import pyperclip
 
 # Names and initial numbers
 names_numbers = {
@@ -51,8 +50,7 @@ def app():
     # Button to copy all entries
     if st.button('Copy all entries'):
         formatted_text = '\n'.join([f'{name} {number}' for name, number in names_numbers.items()])
-        pyperclip.copy(formatted_text)
-        st.success('Copied to clipboard!')
+        st.text_area('Copy from here:', formatted_text, height=250)
 
 if __name__ == '__main__':
     app()
