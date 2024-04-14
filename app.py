@@ -54,17 +54,17 @@ def app():
     delta_days = (today - start_date.date()).days
     thursday_count = delta_days // 7
 
-    # Display today's date and the number of weeks added in Arabic
-    st.write(f"تاريخ اليوم: {today.strftime('%d %B %Y')}")
-    st.write(f"عدد الختمات منذ 22 أكتوبر 2020: {thursday_count}")
+    # Display today's date and the number of weeks added in Arabic using Markdown for right alignment
+    st.markdown(f"#### تاريخ اليوم: {today.strftime('%d %B %Y')}", unsafe_allow_html=True)
+    st.markdown(f"#### عدد الأسابيع منذ 22 أكتوبر 2020: {thursday_count}", unsafe_allow_html=True)
 
     # Increment the initial numbers by the number of past Thursdays
     updated_numbers = {name: (number + thursday_count) % 30 + 1 for name, number in initial_numbers.items()}
 
-    # Display names and numbers
+    # Display names and numbers right-aligned using Markdown
     for name, number in updated_numbers.items():
         hindi_number = convert_to_hindi(number)
-        st.write(f'{name} {hindi_number}')
+        st.markdown(f"<p style='text-align: right;'>{name} {hindi_number}</p>", unsafe_allow_html=True)
 
     # Button to copy all entries
     if st.button('نسخ كل الإدخالات'):
