@@ -56,7 +56,7 @@ def app():
 
     # Display today's date and the number of weeks added in Arabic using Markdown for right alignment
     st.markdown(f"#### تاريخ اليوم: {today.strftime('%d %B %Y')}", unsafe_allow_html=True)
-    st.markdown(f"#### عدد الأسابيع منذ 22 أكتوبر 2020: {thursday_count}", unsafe_allow_html=True)
+    st.markdown(f"#### عدد الختمات منذ 22 أكتوبر 2020: {thursday_count}", unsafe_allow_html=True)
 
     # Increment the initial numbers by the number of past Thursdays
     updated_numbers = {name: (number + thursday_count) % 30 + 1 for name, number in initial_numbers.items()}
