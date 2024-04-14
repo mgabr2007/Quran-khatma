@@ -53,7 +53,7 @@ def app():
 
     # Button to copy all entries
     if st.button('Copy all entries'):
-        formatted_text = '\n'.join([f'{name} {st.session_state['names_numbers'][name]}' for name in st.session_state['names_numbers']])
+        formatted_text = '\n'.join([f"{name} {st.session_state['names_numbers'][name]}" for name in st.session_state['names_numbers']])
         st.text_area('Copy from here:', formatted_text, height=250)
 
 if __name__ == '__main__':
