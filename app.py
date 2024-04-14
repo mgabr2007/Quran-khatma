@@ -6,7 +6,7 @@ start_date = datetime(2020, 10, 22)
 
 # Names and initial numbers
 initial_numbers = {
-    "عمو أحمد": 30,
+    "عمو أحمد": 27,
     "طنط سوسو": 1,
     "سارة": 2,
     "ابراهيم": 3,
