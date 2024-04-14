@@ -50,10 +50,13 @@ def convert_to_hindi(number):
 def app():
     st.title('Name and Number Manager')
 
-    # Calculate the number of Thursdays since the start date
     today = datetime.today().date()
     delta_days = (today - start_date.date()).days
     thursday_count = delta_days // 7
+
+    # Display today's date and the number of weeks added
+    st.write(f"Today's Date: {today.strftime('%B %d, %Y')}")
+    st.write(f"Weeks since April 11, 2024: {thursday_count}")
 
     # Increment the initial numbers by the number of past Thursdays
     updated_numbers = {name: (number + thursday_count - 1) % 30 + 1 for name, number in initial_numbers.items()}
