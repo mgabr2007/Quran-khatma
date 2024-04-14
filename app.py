@@ -48,7 +48,11 @@ def app():
     # Button to increment numbers
     if st.button('Add 1 to all numbers'):
         for name in st.session_state['names_numbers']:
-            st.session_state['names_numbers'][name] += 1
+            new_value = st.session_state['names_numbers'][name] + 1
+            if new_value > 30:
+                st.session_state['names_numbers'][name] = 1
+            else:
+                st.session_state['names_numbers'][name] = new_value
         st.experimental_rerun()
 
     # Button to copy all entries
