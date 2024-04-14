@@ -1,4 +1,5 @@
 import streamlit as st
+from datetime import datetime, timedelta
 
 # Names and initial numbers
 initial_numbers = {
@@ -49,14 +50,28 @@ def app():
     # Initialize or get existing state
     if 'names_numbers' not in st.session_state:
         st.session_state['names_numbers'] = initial_numbers.copy()
+        st.session_state['last_updated'] = datetime(2024, 4, 11)  # Start counting from this date
+
+    today = datetime.today().date()
+    last_updated = st.session_state['last_updated'].date()
+
+    # Check if today is Thursday and we haven't updated this week
+    if today.weekday() == 3 and (today > last_updated or last_updated.weekday() != 3):
+        for name in st.session_state['names_numbers']:
+            new_value = st.session_state['names_numbers'][name] + 1
+            if new_value > 30:
+                st.session_state['names_numbers'][name] = 1
+            else:
+                st.session_state['names_numbers'][name] = new_value
+        st.session_state['last_updated'] = today
 
     # Display names and numbers
     for name, number in st.session_state['names_numbers'].items():
         hindi_number = convert_to_hindi(number)
         st.write(f'{name} {hindi_number}')
 
-    # Button to increment numbers
-    if st.button('Add 1 to all numbers'):
+    # Button to manually increment numbers
+    if st.button('Add 1 to all numbers manually'):
         for name in st.session_state['names_numbers']:
             new_value = st.session_state['names_numbers'][name] + 1
             if new_value > 30:
