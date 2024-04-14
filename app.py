@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 
 # Start date from which Thursdays are counted
-start_date = datetime(2024, 4, 11)
+start_date = datetime(2020, 10, 22)
 
 # Names and initial numbers
 initial_numbers = {
@@ -56,10 +56,10 @@ def app():
 
     # Display today's date and the number of weeks added
     st.write(f"Today's Date: {today.strftime('%B %d, %Y')}")
-    st.write(f"Weeks since April 11, 2024: {thursday_count}")
+    st.write(f"Weeks since October 22, 2020: {thursday_count}")
 
     # Increment the initial numbers by the number of past Thursdays
-    updated_numbers = {name: (number + thursday_count - 1) % 30 + 1 for name, number in initial_numbers.items()}
+    updated_numbers = {name: (number + thursday_count) % 30 + 1 for name, number in initial_numbers.items()}
 
     # Display names and numbers
     for name, number in updated_numbers.items():
