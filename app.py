@@ -48,15 +48,15 @@ def convert_to_hindi(number):
     return ''.join(arabic_to_hindi[digit] for digit in str(number))
 
 def app():
-    st.title('Name and Number Manager')
+    st.title('ختمة القرأن لأل جبر')
 
     today = datetime.today().date()
     delta_days = (today - start_date.date()).days
     thursday_count = delta_days // 7
 
-    # Display today's date and the number of weeks added
-    st.write(f"Today's Date: {today.strftime('%B %d, %Y')}")
-    st.write(f"Weeks since October 22, 2020: {thursday_count}")
+    # Display today's date and the number of weeks added in Arabic
+    st.write(f"تاريخ اليوم: {today.strftime('%d %B %Y')}")
+    st.write(f"عدد الختمات منذ 22 أكتوبر 2020: {thursday_count}")
 
     # Increment the initial numbers by the number of past Thursdays
     updated_numbers = {name: (number + thursday_count) % 30 + 1 for name, number in initial_numbers.items()}
@@ -67,9 +67,9 @@ def app():
         st.write(f'{name} {hindi_number}')
 
     # Button to copy all entries
-    if st.button('Copy all entries'):
+    if st.button('نسخ كل الإدخالات'):
         formatted_text = '\n'.join([f"{name} {convert_to_hindi(updated_numbers[name])}" for name in updated_numbers])
-        st.text_area('Copy from here:', formatted_text, height=250)
+        st.text_area('انسخ من هنا:', formatted_text, height=250)
 
 if __name__ == '__main__':
     app()
