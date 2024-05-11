@@ -31,6 +31,16 @@ def app():
     delta_days = (today - datetime(2020, 10, 22).date()).days
     thursday_count = delta_days // 7
 
+    # Weekly messages to be displayed every Thursday
+    weekly_messages = [
+        "رسالة الأسبوع الأول",
+        "رسالة الأسبوع الثاني",
+        "رسالة الأسبوع الثالث",
+        # Add more messages as needed
+    ]
+    # Select message based on the number of Thursdays
+    weekly_message = weekly_messages[thursday_count % len(weekly_messages)]
+    
     # Display today's date and the number of weeks added in Arabic using Markdown for right alignment
     st.markdown(f"#### تاريخ اليوم: {arabic_date}", unsafe_allow_html=True)
     st.markdown(f"#### عدد الختمات منذ ٢٢ أكتوبر ٢٠٢٠: {convert_to_hindi(thursday_count)}", unsafe_allow_html=True)
