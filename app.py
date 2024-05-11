@@ -1,5 +1,5 @@
 import streamlit as st
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Arabic month names
 arabic_months = {
@@ -23,12 +23,23 @@ def format_date_in_arabic(date):
     year = convert_to_hindi(date.year)
     return f"{day} {month} {year}"
 
+def find_last_thursday(date):
+    weekday = date.weekday()
+    # If today is Thursday (3) or later, go back to the most recent Thursday
+    if weekday >= 3:
+        last_thursday = date - timedelta(days=weekday - 3)
+    else:
+        last_thursday = date - timedelta(days=weekday + 4)
+    return last_thursday
+
 def app():
     st.title('ختمة القرآن لآل جبر')
 
     today = datetime.today().date()
+    last_thursday = find_last_thursday(today)
     arabic_date = format_date_in_arabic(today)
-    delta_days = (today - datetime(2020, 10, 22).date()).days
+    start_date = datetime(2020, 10, 22).date()
+    delta_days = (last_thursday - start_date).days
     thursday_count = delta_days // 7
 
     # Weekly messages to be displayed every Thursday
@@ -38,12 +49,12 @@ def app():
         "رسالة الأسبوع الثالث",
         # Add more messages as needed
     ]
-    # Select message based on the number of Thursdays
+    # Select message based on the number of Thursdays since the start date
     weekly_message = weekly_messages[thursday_count % len(weekly_messages)]
-    
-    # Display today's date and the number of weeks added in Arabic using Markdown for right alignment
+
     st.markdown(f"#### تاريخ اليوم: {arabic_date}", unsafe_allow_html=True)
     st.markdown(f"#### عدد الختمات منذ ٢٢ أكتوبر ٢٠٢٠: {convert_to_hindi(thursday_count)}", unsafe_allow_html=True)
+    st.markdown(f"#### رسالة الأسبوع: {weekly_message}", unsafe_allow_html=True)
 
     # Names and initial numbers
     initial_numbers = {
