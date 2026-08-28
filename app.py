@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime, timedelta
+from urllib.parse import quote
 
 # Arabic month names
 arabic_months = {
@@ -14,14 +15,17 @@ arabic_to_hindi = {
     '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
 }
 
+
 def convert_to_hindi(number):
     return ''.join(arabic_to_hindi[digit] for digit in str(number))
+
 
 def format_date_in_arabic(date):
     day = convert_to_hindi(date.day)
     month = arabic_months[date.month]
     year = convert_to_hindi(date.year)
     return f"{day} {month} {year}"
+
 
 def find_last_thursday(date):
     weekday = date.weekday()
@@ -32,12 +36,35 @@ def find_last_thursday(date):
         last_thursday = date - timedelta(days=weekday + 4)
     return last_thursday
 
+
+def build_whatsapp_message(cycle_date, khatma_count, assignments, weekly_message):
+    """Build the weekly Arabic assignment message for WhatsApp sharing."""
+    lines = [
+        "🕌 ختمة القرآن لآل جبر",
+        f"📅 توزيع الأسبوع ابتداءً من الخميس {cycle_date}",
+        f"🔢 الختمة رقم {convert_to_hindi(khatma_count)}",
+        "",
+    ]
+
+    lines.extend(
+        f"{name} — الجزء {convert_to_hindi(number)}"
+        for name, number in assignments.items()
+    )
+    lines.extend([
+        "",
+        f"💬 {weekly_message}",
+        "🤲 تقبل الله منا ومنكم صالح الأعمال",
+    ])
+    return '\n'.join(lines)
+
+
 def app():
     st.title('ختمة القرآن لآل جبر')
 
     today = datetime.today().date()
     last_thursday = find_last_thursday(today)
     arabic_date = format_date_in_arabic(today)
+    cycle_date = format_date_in_arabic(last_thursday)
     start_date = datetime(2020, 10, 22).date()
     delta_days = (last_thursday - start_date).days
     thursday_count = delta_days // 7
@@ -74,10 +101,24 @@ def app():
         hindi_number = convert_to_hindi(number)
         st.markdown(f"<p style='text-align: right;'>{name} {hindi_number}</p>", unsafe_allow_html=True)
 
+    whatsapp_message = build_whatsapp_message(
+        cycle_date,
+        thursday_count,
+        updated_numbers,
+        weekly_message,
+    )
+    whatsapp_url = f"https://wa.me/?text={quote(whatsapp_message, safe='')}"
+    st.link_button(
+        "📲 إرسال القائمة إلى مجموعة الواتساب",
+        whatsapp_url,
+        type="primary",
+    )
+
     # Button to copy all entries
     if st.button('نسخ كل الإدخالات'):
         formatted_text = '\n'.join([f"{name} {convert_to_hindi(updated_numbers[name])}" for name in updated_numbers])
         st.text_area('انسخ من هنا:', formatted_text, height=250)
+
 
 if __name__ == '__main__':
     app()
