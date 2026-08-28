@@ -27,6 +27,11 @@ def format_date_in_arabic(date):
     return f"{day} {month} {year}"
 
 
+def format_day_icon(day):
+    """Render a date number as dynamic Unicode keycap digits."""
+    return ''.join(f"{digit}\ufe0f\u20e3" for digit in str(day))
+
+
 def find_last_thursday(date):
     weekday = date.weekday()
     # If today is Thursday (3) or later, go back to the most recent Thursday
@@ -37,11 +42,11 @@ def find_last_thursday(date):
     return last_thursday
 
 
-def build_whatsapp_message(cycle_date, khatma_count, assignments, weekly_message):
+def build_whatsapp_message(cycle_day, cycle_date, khatma_count, assignments, weekly_message):
     """Build the weekly Arabic assignment message for WhatsApp sharing."""
     lines = [
         "🕌 ختمة القرآن لآل جبر",
-        f"📅 توزيع الأسبوع ابتداءً من الخميس {cycle_date}",
+        f"{format_day_icon(cycle_day)} توزيع الأسبوع ابتداءً من الخميس {cycle_date}",
         f"🔢 الختمة رقم {convert_to_hindi(khatma_count)}",
         "",
     ]
@@ -102,6 +107,7 @@ def app():
         st.markdown(f"<p style='text-align: right;'>{name} {hindi_number}</p>", unsafe_allow_html=True)
 
     whatsapp_message = build_whatsapp_message(
+        last_thursday.day,
         cycle_date,
         thursday_count,
         updated_numbers,
